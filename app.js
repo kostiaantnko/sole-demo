@@ -240,17 +240,12 @@ const GeoNotification = {
     toast.className = 'geo-toast';
     toast.innerHTML = `
       <div class="geo-toast-body">${flag} Browsing from ${country}. Switching to ${currency}...</div>
-      <button class="geo-toast-x" aria-label="Dismiss">✕</button>
+      <div class="geo-toast-spinner" aria-hidden="true"></div>
     `;
 
     document.body.appendChild(toast);
 
     const timer = setTimeout(() => this._apply(toast, currency, flag, fromCode), this.SWITCH_DELAY);
-
-    toast.querySelector('.geo-toast-x').addEventListener('click', () => {
-      clearTimeout(timer);
-      this._dismiss(toast);
-    });
   },
 
   _apply(toast, currency, flag, fromCode) {
@@ -258,6 +253,9 @@ const GeoNotification = {
 
     toast.querySelector('.geo-toast-body').innerHTML =
       `${flag} Now showing prices in ${currency}. <a class="geo-toast-back" href="#">Back to ${fromCode}</a>`;
+
+    const spinner = toast.querySelector('.geo-toast-spinner');
+    spinner.outerHTML = `<button class="geo-toast-x" aria-label="Dismiss">✕</button>`;
 
     toast.querySelector('.geo-toast-back').addEventListener('click', (e) => {
       e.preventDefault();

@@ -718,6 +718,21 @@ header {
 
 .geo-toast-body strong { color: #fff; font-weight: 600; }
 
+.geo-toast-spinner {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.2);
+  border-top-color: rgba(255,255,255,0.7);
+  border-radius: 50%;
+  margin-right: 14px;
+  animation: toastSpin 0.7s linear infinite;
+}
+
+@keyframes toastSpin {
+  to { transform: rotate(360deg); }
+}
+
 .geo-toast-x {
   flex-shrink: 0;
   width: 32px;
