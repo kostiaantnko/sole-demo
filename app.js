@@ -224,9 +224,9 @@ const COUNTRY_CURRENCY = {
 };
 
 const GeoNotification = {
-  APPEAR_DELAY: 2000,   // ms after page load before toast shows
-  SWITCH_DELAY: 4000,   // ms toast stays in first state before switching
-  DISMISS_DELAY: 4000,  // ms to show confirmation before auto-dismiss
+  APPEAR_DELAY: 1000,   // ms after page load before toast shows
+  SWITCH_DELAY: 6000,   // ms toast stays in first state before switching
+  DISMISS_DELAY: 2000,  // ms to show confirmation before auto-dismiss
 
   async init() {
     // Demo: always simulate a UK visitor
@@ -239,7 +239,7 @@ const GeoNotification = {
     const toast = document.createElement('div');
     toast.className = 'geo-toast';
     toast.innerHTML = `
-      <div class="geo-toast-body">${flag} Browsing from ${country}. Switching to ${currency}...</div>
+      <div class="geo-toast-body">${flag} Your location is ${country}. Switching prices to ${currency}</div>
       <div class="geo-toast-spinner" aria-hidden="true"></div>
     `;
 
@@ -252,7 +252,7 @@ const GeoNotification = {
     CurrencyManager.set(currency);
 
     toast.querySelector('.geo-toast-body').innerHTML =
-      `${flag} Now showing prices in ${currency}. <a class="geo-toast-back" href="#">Back to ${fromCode}</a>`;
+      `${flag} Now showing prices in ${currency}. <a class="geo-toast-back" href="#">Undo</a>`;
 
     const spinner = toast.querySelector('.geo-toast-spinner');
     spinner.outerHTML = `<button class="geo-toast-x" aria-label="Dismiss">✕</button>`;
