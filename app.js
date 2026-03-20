@@ -226,7 +226,7 @@ const COUNTRY_CURRENCY = {
 const GeoNotification = {
   APPEAR_DELAY: 1000,   // ms after page load before toast shows
   SWITCH_DELAY: 6000,   // ms toast stays in first state before switching
-  DISMISS_DELAY: 2000,  // ms to show confirmation before auto-dismiss
+  DISMISS_DELAY: 3000,  // ms to show confirmation before auto-dismiss
 
   async init() {
     // Demo: always simulate a UK visitor
