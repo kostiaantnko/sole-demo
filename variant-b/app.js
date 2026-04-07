@@ -243,18 +243,18 @@ const GeoNotification = {
     CurrencyManager.set(currency);
 
     toast.querySelector('.geo-toast-body').innerHTML =
-      `${flag} Now showing prices in ${currency}. <a class="geo-toast-back" href="#">Undo</a>`;
+      `${flag} Now showing prices in ${currency}. <a class="geo-toast-link" href="#">Switch to ${fromCode}</a>`;
 
     const spinner = toast.querySelector('.geo-toast-spinner');
-    spinner.outerHTML = `<button class="geo-toast-x" aria-label="Dismiss">✕</button>`;
+    spinner.outerHTML = `<button class="geo-toast-keep">Keep ${currency}</button>`;
 
-    toast.querySelector('.geo-toast-back').addEventListener('click', (e) => {
+    toast.querySelector('.geo-toast-link').addEventListener('click', (e) => {
       e.preventDefault();
       CurrencyManager.set(fromCode);
       this._dismiss(toast);
     });
 
-    toast.querySelector('.geo-toast-x').addEventListener('click', () => this._dismiss(toast), { once: true });
+    toast.querySelector('.geo-toast-keep').addEventListener('click', () => this._dismiss(toast), { once: true });
 
     // No auto-dismiss — stays until user interacts
   },

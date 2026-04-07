@@ -733,27 +733,31 @@ header {
   to { transform: rotate(360deg); }
 }
 
-.geo-toast-x {
-  flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(255,255,255,0.45);
-  font-size: 11px;
-  border-radius: 4px;
-  margin-right: 4px;
-  transition: color 0.15s;
-}
-
-.geo-toast-x:hover { color: rgba(255,255,255,0.9); }
-
-.geo-toast-back {
-  color: inherit;
+.geo-toast-link {
+  color: rgba(255,255,255,0.75);
   text-decoration: underline;
   text-underline-offset: 2px;
+  cursor: pointer;
 }
+
+.geo-toast-link:hover { color: #fff; }
+
+.geo-toast-keep {
+  flex-shrink: 0;
+  padding: 7px 14px;
+  margin: 6px 6px 6px 0;
+  background: #fff;
+  color: #1a1a1a;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.geo-toast-keep:hover { background: rgba(255,255,255,0.85); }
 
 /* ─── Footer ────────────────────────────────────────────────────────────────── */
 footer {
