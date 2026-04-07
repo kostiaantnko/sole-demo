@@ -262,12 +262,7 @@ function initApp() {
   CurrencyManager.init();
   Cart.init();
 
-  // Inject currency panel into header
-  const headerActions = document.querySelector('.header-actions');
-  if (headerActions) {
-    const panel = buildCurrencyPanel();
-    headerActions.insertBefore(panel, headerActions.querySelector('.cart-link'));
-  }
+  // No currency panel in variant-b
 
   document.addEventListener('cartChange', updateCartBadge);
   updateCartBadge();
