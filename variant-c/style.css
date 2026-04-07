@@ -746,18 +746,18 @@ header {
   flex-shrink: 0;
   padding: 7px 14px;
   margin: 6px 6px 6px 0;
-  background: #fff;
-  color: #1a1a1a;
+  background: transparent;
+  color: #fff;
   font-size: 12px;
   font-weight: 500;
   font-family: inherit;
-  border: none;
+  border: 1px solid rgba(255,255,255,0.45);
   border-radius: 4px;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: border-color 0.15s, background 0.15s;
 }
 
-.geo-toast-keep:hover { background: rgba(255,255,255,0.85); }
+.geo-toast-keep:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
 
 /* ─── Footer ────────────────────────────────────────────────────────────────── */
 footer {
