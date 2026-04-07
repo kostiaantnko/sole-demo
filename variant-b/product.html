@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product — SOLE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">SOLE</a>
+    <nav class="header-nav">
+      <a href="index.html">Catalog</a>
+    </nav>
+    <div class="header-actions">
+      <a href="checkout.html" class="cart-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        Bag
+        <span class="cart-badge">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="page">
+  <nav class="breadcrumb">
+    <a href="index.html">Catalog</a>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-current" id="breadcrumbName">—</span>
+  </nav>
+
+  <div class="product-layout" id="productLayout"></div>
+</main>
+
+<footer>
+  <span class="footer-logo">SOLE</span>
+  <span class="footer-copy">Demo store — multi-currency exploration</span>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+  initApp();
+
+  const params = new URLSearchParams(location.search);
+  const id = parseInt(params.get('id'));
+  const product = PRODUCTS.find(p => p.id === id);
+
+  if (!product) {
+    document.getElementById('productLayout').innerHTML = '<p style="color:var(--text-2)">Product not found. <a href="index.html" style="text-decoration:underline">Back to catalog</a></p>';
+  } else {
+    document.title = `${product.name} — SOLE`;
+    document.getElementById('breadcrumbName').textContent = product.name;
+
+    let selectedSize = null;
+    let mainImgIndex = 0;
+
+    function renderPrice() {
+      return CurrencyManager.format(product.price);
+    }
+
+    function render() {
+      document.getElementById('productLayout').innerHTML = `
+        <div class="product-gallery">
+          <div class="gallery-main">
+            <img id="galleryMain" src="${product.images[mainImgIndex]}" alt="${product.name}">
+          </div>
+          ${product.images.length > 1 ? `
+          <div class="gallery-thumbs">
+            ${product.images.map((img, i) => `
+              <div class="gallery-thumb ${i === mainImgIndex ? 'active' : ''}" data-idx="${i}">
+                <img src="${img}" alt="${product.name} view ${i+1}">
+              </div>
+            `).join('')}
+          </div>` : ''}
+        </div>
+
+        <div class="product-info">
+          <div class="product-brand">${product.brand}</div>
+          <h1 class="product-name">${product.name}</h1>
+          <div class="product-color">${product.color}</div>
+          <div class="product-price" id="productPrice">${renderPrice()}</div>
+
+          <div class="product-section-label">Select size</div>
+          <div class="size-grid">
+            ${product.sizes.map(s => `
+              <button class="size-btn ${selectedSize === s ? 'selected' : ''}" data-size="${s}">${s}</button>
+            `).join('')}
+          </div>
+
+          <button class="add-to-cart-btn" id="addToCart" ${!selectedSize ? 'disabled' : ''}>
+            ${selectedSize ? 'Add to bag' : 'Select a size'}
+          </button>
+
+          <div class="product-description">${product.description}</div>
+        </div>
+      `;
+
+      // Thumb click
+      document.querySelectorAll('.gallery-thumb').forEach(thumb => {
+        thumb.addEventListener('click', () => {
+          mainImgIndex = parseInt(thumb.dataset.idx);
+          render();
+        });
+      });
+
+      // Size click
+      document.querySelectorAll('.size-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedSize = parseFloat(btn.dataset.size);
+          render();
+        });
+      });
+
+      // Add to cart
+      const addBtn = document.getElementById('addToCart');
+      if (addBtn && !addBtn.disabled) {
+        addBtn.addEventListener('click', () => {
+          Cart.add(product, selectedSize);
+          showToast(`${product.name} (US ${selectedSize}) added to bag`);
+        });
+      }
+    }
+
+    render();
+
+    document.addEventListener('currencyChange', () => {
+      const el = document.getElementById('productPrice');
+      if (el) el.textContent = renderPrice();
+    });
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2800);
+  }
+</script>
+</body>
+</html>
