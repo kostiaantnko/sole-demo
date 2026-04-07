@@ -256,7 +256,7 @@ const GeoNotification = {
 
     toast.querySelector('.geo-toast-keep').addEventListener('click', () => this._dismiss(toast), { once: true });
 
-    setTimeout(() => this._dismiss(toast), 3000);
+    setTimeout(() => this._dismiss(toast), 6000);
   },
 
   _dismiss(toast) {
