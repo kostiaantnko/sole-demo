@@ -26,7 +26,7 @@ const CurrencyManager = {
   ipCountry: null,
 
   init() {
-    this.current = 'GBP';
+    this.current = 'USD';
     this.mode = 'manual';
   },
 
@@ -217,27 +217,46 @@ function updatePanelUI(panel) {
 // ─── Geo Currency Notification (Variant B — persistent confirmed state) ───────
 
 const GeoNotification = {
+  APPEAR_DELAY: 1000,
+  SWITCH_DELAY: 6000,
+
   init() {
-    // Show persistent "Now showing GBP" toast immediately — no auto-dismiss
-    const flag = '🇬🇧';
-    const currency = 'GBP';
+    setTimeout(() => this.show({ currency: 'GBP', country: 'United Kingdom', flag: '🇬🇧' }), this.APPEAR_DELAY);
+  },
+
+  show({ currency, country, flag }) {
+    const fromCode = CurrencyManager.current;
 
     const toast = document.createElement('div');
     toast.className = 'geo-toast';
     toast.innerHTML = `
-      <div class="geo-toast-body">${flag} Now showing prices in ${currency}. <a class="geo-toast-back" href="#">Undo</a></div>
-      <button class="geo-toast-x" aria-label="Dismiss">✕</button>
+      <div class="geo-toast-body">${flag} Your location is ${country}. Switching prices to ${currency}</div>
+      <div class="geo-toast-spinner" aria-hidden="true"></div>
     `;
 
     document.body.appendChild(toast);
 
+    setTimeout(() => this._apply(toast, currency, flag, fromCode), this.SWITCH_DELAY);
+  },
+
+  _apply(toast, currency, flag, fromCode) {
+    CurrencyManager.set(currency);
+
+    toast.querySelector('.geo-toast-body').innerHTML =
+      `${flag} Now showing prices in ${currency}. <a class="geo-toast-back" href="#">Undo</a>`;
+
+    const spinner = toast.querySelector('.geo-toast-spinner');
+    spinner.outerHTML = `<button class="geo-toast-x" aria-label="Dismiss">✕</button>`;
+
     toast.querySelector('.geo-toast-back').addEventListener('click', (e) => {
       e.preventDefault();
-      CurrencyManager.set('USD');
+      CurrencyManager.set(fromCode);
       this._dismiss(toast);
     });
 
     toast.querySelector('.geo-toast-x').addEventListener('click', () => this._dismiss(toast), { once: true });
+
+    // No auto-dismiss — stays until user interacts
   },
 
   _dismiss(toast) {
