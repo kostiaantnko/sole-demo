@@ -3,70 +3,110 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SOLE — Sneaker Store</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <title>SOLE — Auto-switch currency demo</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #fff;
+      color: #000;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .hero-title {
+      font-size: 40px;
+      font-weight: 300;
+      letter-spacing: -0.5px;
+      margin-bottom: 10px;
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      color: #999;
+      font-weight: 400;
+    }
+
+    .cards {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 900px;
+      width: 100%;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 32px;
+      width: 260px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s ease;
+    }
+
+    .card:hover {
+      border-color: #000;
+    }
+
+    .card-label {
+      font-size: 48px;
+      font-weight: 300;
+      color: #000;
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.5;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <a href="index.html" class="logo">SOLE</a>
-    <nav class="header-nav">
-      <a href="index.html" class="active">Catalog</a>
-    </nav>
-    <div class="header-actions">
-      <!-- Currency panel injected by app.js -->
-      <a href="checkout.html" class="cart-link">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/>
-          <path d="M16 10a4 4 0 01-8 0"/>
-        </svg>
-        Bag
-        <span class="cart-badge">0</span>
-      </a>
-    </div>
+  <div class="hero">
+    <h1 class="hero-title">Auto-switch currency</h1>
+    <p class="hero-subtitle">Demo · 3 variants</p>
   </div>
-</header>
 
-<main class="page">
-  <div class="product-grid" id="productGrid"></div>
-</main>
+  <div class="cards">
+    <a class="card" href="variant-a/">
+      <div class="card-label">A</div>
+      <div class="card-title">Converter + Auto-dismiss</div>
+      <p class="card-desc">Currency switcher in header. Geo-detects UK, switches to GBP after 6s, dismisses automatically.</p>
+    </a>
+    <a class="card" href="variant-b/">
+      <div class="card-label">B</div>
+      <div class="card-title">No converter + Persistent</div>
+      <p class="card-desc">No currency switcher. Geo-detects UK, switches to GBP after 6s. Toast stays until user dismisses.</p>
+    </a>
+    <a class="card" href="variant-c/">
+      <div class="card-label">C</div>
+      <div class="card-title">No converter + Auto-dismiss</div>
+      <p class="card-desc">No currency switcher. Geo-detects UK, switches to GBP after 6s, dismisses automatically.</p>
+    </a>
+  </div>
 
-<footer>
-  <span class="footer-logo">SOLE</span>
-  <span class="footer-copy">Demo store — multi-currency exploration</span>
-</footer>
-
-<script src="data.js"></script>
-<script src="app.js"></script>
-<script>
-  initApp();
-
-  const grid = document.getElementById('productGrid');
-
-  function renderGrid() {
-    grid.innerHTML = PRODUCTS.map(p => `
-      <a class="product-card" href="product.html?id=${p.id}">
-        <div class="product-card-img">
-          <img src="${p.images[0]}" alt="${p.name}" loading="lazy">
-        </div>
-        <div class="product-card-brand">${p.brand}</div>
-        <div class="product-card-name">${p.name}</div>
-        <div class="product-card-price" data-price="${p.price}">${CurrencyManager.format(p.price)}</div>
-      </a>
-    `).join('');
-  }
-
-  renderGrid();
-
-  document.addEventListener('currencyChange', () => {
-    document.querySelectorAll('[data-price]').forEach(el => {
-      el.textContent = CurrencyManager.format(Number(el.dataset.price));
-    });
-  });
-</script>
 </body>
 </html>
